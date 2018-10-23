@@ -62,11 +62,17 @@ namespace PriceCalculation.Basket
             var discount = 0m;
             foreach (var offer in offers)
             {
-                var item = basketItems.FirstOrDefault(bi => bi.Product.Id == offer.Effect.ProductId);
-                if (item != null && item.Quantity >= offer.Condition.Quantity)
+                var cause = basketItems.FirstOrDefault(bi => bi.Product.Id == offer.Condition.ProductId);
+                var effect = basketItems.FirstOrDefault(bi => bi.Product.Id == offer.Effect.ProductId);
+                if (cause == null || effect == null)
                 {
-                    discount += item.Product.Cost * offer.Effect.Discount;
+                    continue;
                 }
+
+                var appliesThatManyTimes = cause.Quantity / offer.Condition.Quantity;
+                var discountedItemCount = Math.Min(effect.Quantity, offer.Effect.Quantity * appliesThatManyTimes);
+
+                discount += effect.Product.Cost * offer.Effect.Discount * discountedItemCount;
             }
             return discount;
         }
