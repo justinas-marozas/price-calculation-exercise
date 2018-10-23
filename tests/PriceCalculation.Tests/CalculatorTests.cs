@@ -1,14 +1,15 @@
 using System;
 using Xunit;
+using PriceCalculation;
 
 namespace PriceCalculation.Tests
 {
-    public class UnitTest1
+    public class CalculatorTests
     {
         [Fact]
         public void Test1()
         {
-
+            var calc = new Calculator();
         }
     }
 }
