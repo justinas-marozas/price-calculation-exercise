@@ -16,7 +16,7 @@ namespace PriceCalculation.Tests.Dummies
 
         public Product FromId(int id)
         {
-            return _products.Where(p => p.Id == id).First();
+            return _products.First(p => p.Id == id);
         }
     }
 }

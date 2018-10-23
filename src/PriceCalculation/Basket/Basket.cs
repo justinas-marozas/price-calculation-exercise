@@ -25,7 +25,7 @@ namespace PriceCalculation.Basket
         public void Add(int productId, int quantity)
         {
             // no validation or error checking - what a life!
-            var item = Contents.Where(bi => bi.Product.Id == productId).FirstOrDefault();
+            var item = Contents.FirstOrDefault(bi => bi.Product.Id == productId);
 
             if (item == null)
             {
