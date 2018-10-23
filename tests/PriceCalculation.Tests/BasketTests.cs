@@ -4,14 +4,8 @@ using PriceCalculation.Basket;
 
 namespace PriceCalculation.Tests
 {
-    public class CalculatorTests
+    public class BasketTests
     {
-        [Fact]
-        public void Test1()
-        {
-            var calc = new Calculator();
-        }
-
         // Given the basket has 1 bread, 1 butter and 1 milk when I total the basket then the total should be £2.95
         [Theory]
         [InlineData(1, 0, 0, 0.8d)]
