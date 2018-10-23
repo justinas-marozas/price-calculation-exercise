@@ -93,19 +93,21 @@ namespace PriceCalculation.Tests
         }
 
         [Theory]
-        [InlineData(0, 0, 0, 0.0)]
-        [InlineData(1, 0, 0, 0.8)]
+        [InlineData(0, 0, 0, 0.00)]
+        [InlineData(1, 0, 0, 0.80)]
         [InlineData(0, 1, 0, 1.15)]
-        [InlineData(0, 0, 1, 1.0)]
+        [InlineData(0, 0, 1, 1.00)]
         // Given the basket has 1 bread, 1 butter and 1 milk when I total the basket then the total should be £2.95
         [InlineData(1, 1, 1, 2.95)]
         // Given the basket has 2 butter and 2 bread when I total the basket then the total should be £3.10
-        [InlineData(2, 0, 2, 3.1)]
-        [InlineData(2, 2, 2, 5.4)]
-        [InlineData(2, 2, 0, 3.9)]
+        [InlineData(2, 0, 2, 3.10)]
+        [InlineData(2, 2, 2, 5.40)]
+        [InlineData(2, 2, 0, 3.90)]
         // Given the basket has 4 milk when I total the basket then the total should be £3.45
         [InlineData(0, 4, 0, 3.45)]
         [InlineData(0, 3, 0, 3.45)]
+        // Given the basket has 2 butter, 1 bread and 8 milk when I total the basket then the total should be £9.00
+        [InlineData(2, 1, 8, 9.00)]
         public void Total_cost_should_be_accounted_for_offers(int butter, int milk, int bread, decimal expectedTotal)
         {
             // arrange
