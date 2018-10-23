@@ -24,7 +24,16 @@ namespace PriceCalculation.Basket
 
         public void Add(int productId, int quantity)
         {
-            // no validation or error checking - what a life!
+            if (quantity == 0)
+            {
+                return;
+            }
+            if (quantity < 0)
+            {
+                throw new InvalidOperationException("Negative quantity is not allowed.");
+            }
+
+            // no error checking - what a life!
             var item = Contents.FirstOrDefault(bi => bi.Product.Id == productId);
 
             if (item == null)
@@ -40,7 +49,26 @@ namespace PriceCalculation.Basket
 
         public decimal Total()
         {
-            return Contents.Aggregate(0m, (sum, item) => sum += item.Product.Cost * item.Quantity);
+            var ids = Contents.Select(bi => bi.Product.Id);
+            var offers = _offerProvider.FromProductIds(ids);
+            var total = Contents.Aggregate(0m, (sum, item) => sum += item.Product.Cost * item.Quantity);
+            var discount = CalculateDiscount(Contents, offers);
+
+            return total - discount;
+        }
+
+        private static decimal CalculateDiscount(IEnumerable<BasketItem> basketItems, IEnumerable<Offer> offers)
+        {
+            var discount = 0m;
+            foreach (var offer in offers)
+            {
+                var item = basketItems.FirstOrDefault(bi => bi.Product.Id == offer.Effect.ProductId);
+                if (item != null && item.Quantity >= offer.Condition.Quantity)
+                {
+                    discount += item.Product.Cost * offer.Effect.Discount;
+                }
+            }
+            return discount;
         }
     }
 }
