@@ -107,7 +107,7 @@ namespace PriceCalculation.Tests
         [InlineData(0, 4, 0, 3.45)]
         [InlineData(0, 3, 0, 3.45)]
         // Given the basket has 2 butter, 1 bread and 8 milk when I total the basket then the total should be £9.00
-        [InlineData(2, 1, 8, 9.00)]
+        [InlineData(2, 8, 1, 9.00)]
         public void Total_cost_should_be_accounted_for_offers(int butter, int milk, int bread, decimal expectedTotal)
         {
             // arrange
