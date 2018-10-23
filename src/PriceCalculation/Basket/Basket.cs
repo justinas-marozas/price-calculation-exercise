@@ -1,5 +1,8 @@
 namespace PriceCalculation.Basket
 {
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
     using PriceCalculation.Offers;
     using PriceCalculation.Offers.Providers;
     using PriceCalculation.Products;
@@ -11,6 +14,8 @@ namespace PriceCalculation.Basket
 
         private readonly OfferProvider _offerProvider;
 
+        public readonly IList<BasketItem> Contents = new List<BasketItem>();
+
         public Basket(ProductProvider productProvider, OfferProvider offerProvider)
         {
             _productProvider = productProvider;
@@ -19,12 +24,23 @@ namespace PriceCalculation.Basket
 
         public void Add(int productId, int quantity)
         {
-            throw new NotImplementedException();
+            // no validation or error checking - what a life!
+            var item = Contents.Where(bi => bi.Product.Id == productId).FirstOrDefault();
+
+            if (item == null)
+            {
+                var product = _productProvider.FromId(productId);
+                Contents.Add(new BasketItem(product, quantity));
+            }
+            else
+            {
+                item.Add(quantity);
+            }
         }
 
         public decimal Total()
         {
-            throw new NotImplementedException();
+            return Contents.Aggregate(0m, (sum, item) => sum += item.Product.Cost * item.Quantity);
         }
     }
 }
